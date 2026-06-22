@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PBLHub · 高中信息科技教师项目式学习支撑平台</title>
+    <!-- 使用 Font Awesome 图标库 (免费) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== 全局重置 & 基础 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* ===== 顶部导航栏 ===== */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #eef2f6;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: -0.3px;
+            flex-shrink: 0;
+        }
+
+        .navbar .logo span {
+            color: #2563eb;
+        }
+
+        .navbar .logo i {
+            color: #2563eb;
+            font-size: 24px;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .navbar .nav-links a {
+            padding: 6px 14px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .navbar .nav-links a:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar .nav-links a.active {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .navbar .user-area {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .navbar .user-area .username {
+            font-weight: 500;
+            color: #1e293b;
+            margin-right: 4px;
+        }
+
+        .navbar .user-area .divider {
+            color: #d1d9e6;
+            margin: 0 2px;
+        }
+
+        .navbar .user-area a {
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .navbar .user-area a:hover {
+            background: #f1f5f9;
+        }
+
+        /* ===== 轮播图区域 ===== */
+        .hero-carousel {
+            background: #ffffff;
+            padding: 40px 0 32px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #eef2f6;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+            aspect-ratio: 16 / 7;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 60px;
+        }
+
+        /* 每张 slide 的背景图 (模拟学生作品) */
+        .carousel-slide:nth-child(1) {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+        .carousel-slide:nth-child(2) {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
+        .carousel-slide:nth-child(3) {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+        }
+        .carousel-slide:nth-child(4) {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .carousel-slide .slide-content {
+            max-width: 700px;
+            text-align: center;
+            color: #0f172a;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.70);
+            backdrop-filter: blur(6px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.50);
+        }
+
+        .carousel-slide .slide-content .badge {
+            display: inline-block;
+            background: #2563eb;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+        }
+
+        .carousel-slide .slide-content h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        .carousel-slide .slide-content p {
+            font-size: 17px;
+            color: #334155;
+            margin-bottom: 20px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .carousel-slide .slide-content .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2563eb;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.20);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            color: #1e293b;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            border: 1px solid #d1d9e6;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #b0c0d4;
+        }
+
+        /* 轮播控制按钮 */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.60);
+            color: #1e293b;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .carousel-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d9e6;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .carousel-dots span.active {
+            background: #2563eb;
+            transform: scale(1.2);
+        }
+
+        .carousel-dots span:hover {
+            background: #94a3b8;
+        }
+
+        /* ===== 统计数据 ===== */
+        .stats-section {
+            background: #ffffff;
+            padding: 40px 0 48px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px 8px;
+        }
+
+        .stat-item .number {
+            font-size: 38px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .stat-item .number span {
+            color: #2563eb;
+        }
+
+        .stat-item .label {
+            font-size: 15px;
+            color: #64748b;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* ===== 推荐功能 ===== */
+        .features-section {
+            background: #f8fafc;
+            padding: 56px 0 48px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0f172a;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .feature-item {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px 28px 28px 28px;
+            text-align: center;
+            border: 1px solid #eef2f6;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .feature-item:hover {
+            border-color: #bfdbfe;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .feature-item .icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            font-size: 28px;
+            color: #2563eb;
+        }
+
+        .feature-item h3 {
+            font-size: 19px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .feature-item p {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .feature-item .link {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2563eb;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+
+        .feature-item .link:hover {
+            gap: 10px;
+        }
+
+        /* ===== 推荐案例 ===== */
+        .cases-section {
+            background: #ffffff;
+            padding: 56px 0 60px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .case-item {
+            background: #f8fafc;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #eef2f6;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .case-item:hover {
+            border-color: #bfdbfe;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .case-item .case-image {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            background-color: #e2e8f0;
+        }
+
+        .case-item:nth-child(1) .case-image {
+            background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+        }
+        .case-item:nth-child(2) .case-image {
+            background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+        }
+        .case-item:nth-child(3) .case-image {
+            background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
+        }
+
+        .case-item .case-body {
+            padding: 20px 24px 24px 24px;
+        }
+
+        .case-item .case-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2563eb;
+            background: #eff6ff;
+            padding: 2px 14px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        .case-item h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .case-item p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .case-item .case-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #eef2f6;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .case-item .case-meta i {
+            margin-right: 4px;
+        }
+
+        /* ===== 关于我们 (底部) ===== */
+        .footer {
+            background: #ffffff;
+            padding: 48px 0 40px 0;
+            border-top: 1px solid #eef2f6;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .footer-brand .logo-text span {
+            color: #2563eb;
+        }
+
+        .footer-brand p {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.7;
+            max-width: 320px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 14px;
+        }
+
+        .footer-col ul li {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .footer-col ul li i {
+            width: 20px;
+            color: #2563eb;
+            margin-right: 6px;
+        }
+
+        .footer-col ul li a {
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #2563eb;
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eef2f6;
+            text-align: center;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .navbar .nav-links a {
+                padding: 4px 10px;
+                font-size: 14px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            .features-grid,
+            .cases-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+            .carousel-slide .slide-content h2 {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .navbar .container {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 12px 20px;
+                gap: 10px;
+            }
+
+            .navbar .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                gap: 4px;
+                flex-wrap: wrap;
+            }
+
+            .navbar .nav-links a {
+                font-size: 13px;
+                padding: 4px 10px;
+            }
+
+            .navbar .user-area {
+                font-size: 13px;
+                gap: 4px;
+            }
+
+            .carousel-slide {
+                aspect-ratio: 16 / 9;
+                padding: 24px 20px;
+            }
+
+            .carousel-slide .slide-content {
+                padding: 16px 20px;
+            }
+
+            .carousel-slide .slide-content h2 {
+                font-size: 20px;
+            }
+
+            .carousel-slide .slide-content p {
+                font-size: 14px;
+            }
+
+            .carousel-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+
+            .carousel-btn.prev {
+                left: 10px;
+            }
+            .carousel-btn.next {
+                right: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .stat-item .number {
+                font-size: 28px;
+            }
+
+            .features-grid,
+            .cases-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .feature-item {
+                padding: 24px 20px;
+            }
+
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo {
+                font-size: 18px;
+            }
+            .navbar .nav-links a {
+                font-size: 12px;
+                padding: 3px 8px;
+            }
+            .navbar .user-area {
+                font-size: 12px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            .carousel-slide .slide-content h2 {
+                font-size: 18px;
+            }
+            .btn-primary,
+            .btn-secondary {
+                padding: 8px 20px;
+                font-size: 13px;
+            }
+            .stat-item .number {
+                font-size: 24px;
+            }
+            .stat-item .label {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 顶部导航栏 ===== -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                PBL<span>Hub</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="active">首页</a>
+                <a href="#">项目设计</a>
+                <a href="#">案例库</a>
+                <a href="#">PBL学习中心</a>
+                <a href="#">资源中心</a>
+                <a href="#">社区讨论</a>
+                <a href="#">关于我们</a>
+            </nav>
+            <div class="user-area">
+                <span class="username"><i class="fas fa-user-circle" style="margin-right:4px;"></i>张老师</span>
+                <span class="divider">|</span>
+                <a href="#">修改密码</a>
+                <span class="divider">|</span>
+                <a href="#">退出</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== 轮播图 ===== -->
+    <section class="hero-carousel">
+        <div class="container">
+            <div class="carousel-wrapper">
+                <div class="carousel-slides" id="carouselSlides">
+                    <!-- 第1张 -->
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <div class="badge">🌟 学生作品</div>
+                            <h2>智慧校园 · 垃圾分类助手</h2>
+                            <p>高一学生运用 Python + 物联网，设计出智能垃圾分类装置，用技术解决校园环保问题。</p>
+                            <div class="btn-group">
+                                <a href="#" class="btn-primary"><i class="fas fa-rocket"></i>开始设计项目</a>
+                                <a href="#" class="btn-secondary"><i class="fas fa-book-open"></i>了解PBL</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 第2张 -->
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <div class="badge">🌱 学生作品</div>
+                            <h2>社区志愿服务 · 数字地图</h2>
+                            <p>高二学生利用 Web 技术搭建社区志愿服务信息地图，让爱心服务触手可及。</p>
+                            <div class="btn-group">
+                                <a href="#" class="btn-primary"><i class="fas fa-rocket"></i>开始设计项目</a>
+                                <a href="#" class="btn-secondary"><i class="fas fa-book-open"></i>了解PBL</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 第3张 -->
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <div class="badge">🎨 学生作品</div>
+                            <h2>非遗传承 · 数字化展馆</h2>
+                            <p>学生团队通过 3D 建模与多媒体技术，为本地非遗文化打造沉浸式数字展馆。</p>
+                            <div class="btn-group">
+                                <a href="#" class="btn-primary"><i class="fas fa-rocket"></i>开始设计项目</a>
+                                <a href="#" class="btn-secondary"><i class="fas fa-book-open"></i>了解PBL</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 第4张 -->
+                    <div class="carousel-slide">
+                        <div class="slide-content">
+                            <div class="badge">📊 学生作品</div>
+                            <h2>校园食堂 · 智能数据分析</h2>
+                            <p>利用数据可视化工具分析食堂就餐数据，为学校后勤管理提供决策支持。</p>
+                            <div class="btn-group">
+                                <a href="#" class="btn-primary"><i class="fas fa-rocket"></i>开始设计项目</a>
+                                <a href="#" class="btn-secondary"><i class="fas fa-book-open"></i>了解PBL</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 控制按钮 -->
+                <button class="carousel-btn prev" id="prevBtn" aria-label="上一张">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next" id="nextBtn" aria-label="下一张">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- 指示点 -->
+            <div class="carousel-dots" id="carouselDots">
+                <span class="active" data-index="0"></span>
+                <span data-index="1"></span>
+                <span data-index="2"></span>
+                <span data-index="3"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 统计数据 ===== -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="number"><span>2,400</span>+</div>
+                    <div class="label">注册教师</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number"><span>380</span>+</div>
+                    <div class="label">精选项目案例</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number"><span>1,200</span>+</div>
+                    <div class="label">教学资源文件</div>
+                </div>
+                <div class="stat-item">
+                    <div class="number"><span>96</span>%</div>
+                    <div class="label">教师满意度</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 推荐功能 ===== -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">推荐功能</h2>
+            <p class="section-subtitle">为您的项目式教学提供智能支持</p>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-robot"></i></div>
+                    <h3>AI 项目助手</h3>
+                    <p>智能推荐项目主题、自动生成驱动性问题，辅助教师快速设计高质量 PBL 项目。</p>
+                    <a href="#" class="link">了解详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-folder-open"></i></div>
+                    <h3>PBL 案例库</h3>
+                    <p>汇集全国优秀项目式教学案例，涵盖多学科多学段，一键参考，轻松借鉴。</p>
+                    <a href="#" class="link">浏览案例 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>课程中心</h3>
+                    <p>系统化的 PBL 课程体系，从理论到实践，助力教师成为项目式学习专家。</p>
+                    <a href="#" class="link">进入课程 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 推荐案例 ===== -->
+    <section class="cases-section">
+        <div class="container">
+            <h2 class="section-title">推荐案例</h2>
+            <p class="section-subtitle">来自一线教师的优秀项目式教学实践</p>
+            <div class="cases-grid">
+                <div class="case-item">
+                    <div class="case-image"></div>
+                    <div class="case-body">
+                        <span class="case-tag">高中 · 信息技术</span>
+                        <h4>智慧农场 · 物联网监控系统</h4>
+                        <p>学生利用传感器与云平台，设计并搭建校园智慧农场监控系统，实现环境数据实时采集与分析。</p>
+                        <div class="case-meta">
+                            <span><i class="far fa-user"></i> 李老师</span>
+                            <span><i class="far fa-calendar-alt"></i> 2026-05</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-item">
+                    <div class="case-image"></div>
+                    <div class="case-body">
+                        <span class="case-tag">高中 · 通用技术</span>
+                        <h4>城市无障碍 · 公共设施改造</h4>
+                        <p>项目聚焦城市无障碍设计，学生调研、建模并制作公共设施改造方案，培养社会责任感。</p>
+                        <div class="case-meta">
+                            <span><i class="far fa-user"></i> 王老师</span>
+                            <span><i class="far fa-calendar-alt"></i> 2026-04</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-item">
+                    <div class="case-image"></div>
+                    <div class="case-body">
+                        <span class="case-tag">高中 · 信息技术</span>
+                        <h4>校园文创 · 数字品牌设计</h4>
+                        <p>学生综合运用平面设计、新媒体运营知识，为学校打造完整的数字文创品牌体系。</p>
+                        <div class="case-meta">
+                            <span><i class="far fa-user"></i> 陈老师</span>
+                            <span><i class="far fa-calendar-alt"></i> 2026-03</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 关于我们 (底部) ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo-text">PBL<span>Hub</span></div>
+                    <p>
+                        高中信息科技教师项目式学习支撑平台，致力于为教师提供
+                        全方位的 PBL 设计支持，从驱动性问题到成果展示，一站式搞定。
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>关于我们</h4>
+                    <ul>
+                        <li><a href="#">平台介绍</a></li>
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">合作伙伴</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>联系方式</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 北京市海淀区学院路 38 号</li>
+                        <li><i class="fas fa-envelope"></i> contact@pblhub.edu.cn</li>
+                        <li><i class="fas fa-phone"></i> 010-8888-6666</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>团队成员</h4>
+                    <ul>
+                        <li><i class="fas fa-user-edit"></i> 张明 · 项目统筹</li>
+                        <li><i class="fas fa-user-edit"></i> 李华 · 课程设计</li>
+                        <li><i class="fas fa-user-edit"></i> 王芳 · 技术开发</li>
+                        <li><i class="fas fa-user-edit"></i> 陈静 · 社区运营</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 PBLHub · 高中信息科技教师项目式学习支撑平台 &nbsp;|&nbsp; 京ICP备 2026000000 号
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JavaScript: 轮播图 ===== -->
+    <script>
+        (function() {
+            const slidesContainer = document.getElementById('carouselSlides');
+            const dots = document.querySelectorAll('#carouselDots span');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            let currentIndex = 0;
+            const totalSlides = dots.length;
+            let autoPlayInterval = null;
+            const AUTO_PLAY_DELAY = 5000; // 5秒
+
+            // 切换到指定索引
+            function goToSlide(index) {
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+                currentIndex = index;
+
+                // 移动 slides
+                slidesContainer.style.transform = 'translateX(-' + (currentIndex * 100) + '%)';
+
+                // 更新 dots
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
+
+            // 下一张
+            function nextSlide() {
+                goToSlide(currentIndex + 1);
+            }
+
+            // 上一张
+            function prevSlide() {
+                goToSlide(currentIndex - 1);
+            }
+
+            // 启动自动播放
+            function startAutoPlay() {
+                if (autoPlayInterval) clearInterval(autoPlayInterval);
+                autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+            }
+
+            // 停止自动播放
+            function stopAutoPlay() {
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                    autoPlayInterval = null;
+                }
+            }
+
+            // 事件绑定
+            nextBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                stopAutoPlay();
+                nextSlide();
+                startAutoPlay();
+            });
+
+            prevBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                stopAutoPlay();
+                prevSlide();
+                startAutoPlay();
+            });
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'), 10);
+                    if (index !== currentIndex) {
+                        stopAutoPlay();
+                        goToSlide(index);
+                        startAutoPlay();
+                    }
+                });
+            });
+
+            // 鼠标悬停暂停自动播放
+            const carouselWrapper = document.querySelector('.carousel-wrapper');
+            carouselWrapper.addEventListener('mouseenter', function() {
+                stopAutoPlay();
+            });
+            carouselWrapper.addEventListener('mouseleave', function() {
+                startAutoPlay();
+            });
+
+            // 触摸滑动支持（简单处理）
+            let touchStartX = 0;
+            let touchEndX = 0;
+            carouselWrapper.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+                stopAutoPlay();
+            }, { passive: true });
+
+            carouselWrapper.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+                startAutoPlay();
+            }, { passive: true });
+
+            // 初始化
+            goToSlide(0);
+            startAutoPlay();
+
+            // 窗口 resize 时保持显示正确
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    goToSlide(currentIndex);
+                }, 100);
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

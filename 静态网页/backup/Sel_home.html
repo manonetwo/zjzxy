@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PBL HUB · 项目式学习中心 — 首页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== 全局重置 & 变量 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #dbeafe;
+            --primary-bg: #f0f7ff;
+            --bg: #f6f9fc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-mid: #475569;
+            --text-light: #94a3b8;
+            --border: #e9edf4;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.08);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.25s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 1.8rem;
+        }
+
+        /* ===== 导航栏 (home1 毛玻璃风格) ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo i {
+            font-size: 1.9rem;
+        }
+        .logo span {
+            font-weight: 300;
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin-left: 0.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.6rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-mid);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.3rem 0;
+            border-bottom: 2.5px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links a.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .identity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f1f5f9;
+            padding: 0.25rem 0.9rem 0.25rem 1.1rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            cursor: default;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+        .identity-selector:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+        .identity-selector i.fa-chevron-down {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            margin-left: 0.1rem;
+        }
+        .identity-selector .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.6rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-left: 0.2rem;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: default;
+            flex-shrink: 0;
+        }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .user-info .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        .user-info .role {
+            font-size: 0.65rem;
+            color: var(--text-light);
+        }
+        .logout {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            cursor: default;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .logout:hover {
+            color: #ef4444;
+        }
+
+        /* ===== 通用标题 ===== */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .section-title i {
+            color: var(--primary);
+        }
+        .section-title .more {
+            margin-left: auto;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-light);
+            cursor: default;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .section-title .more:hover {
+            color: var(--primary);
+        }
+        .section-sub {
+            color: var(--text-mid);
+            font-size: 0.95rem;
+            margin-top: -0.6rem;
+            margin-bottom: 1.8rem;
+        }
+
+        /* ===== 卡片网格 ===== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card-grid-3 {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        }
+        .card-grid-4 {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.3rem 1.3rem 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #bfdbfe;
+        }
+        .card .icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+        .card h4 {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+        }
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            margin: 0.2rem 0 0.6rem;
+        }
+        .card .actions {
+            display: flex;
+            gap: 0.9rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .card .actions span {
+            cursor: default;
+            transition: var(--transition);
+        }
+        .card .actions span:hover {
+            color: var(--primary);
+        }
+        .card .actions i {
+            margin-right: 0.2rem;
+        }
+        .card .tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 0.4rem;
+        }
+        .card .tag.hot {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .card .tag.new {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .card .tag.green {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .card .tag.orange {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .card .tag.purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        /* ===== 轮播图 (home1 风格 + home2 多slide) ===== */
+        .hero-carousel {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            aspect-ratio: 16 / 5.5;
+            min-height: 220px;
+            margin-bottom: 2.8rem;
+            background: #eef2ff;
+        }
+        .hero-carousel:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .hero-slides {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        .hero-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 3.5rem;
+            position: relative;
+        }
+        .hero-slide .slide-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-slide:nth-child(1) .slide-bg {
+            /*background: linear-gradient(135deg, #eef2ff 0%, #dbeafe 100%);*/
+        }
+        .hero-slide:nth-child(2) .slide-bg {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+        .hero-slide:nth-child(3) .slide-bg {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+        }
+        .hero-slide .slide-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .hero-slide .text {
+            max-width: 55%;
+        }
+        .hero-slide .text .badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.15rem 1rem;
+            border-radius: 30px;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.3px;
+        }
+        .hero-slide:nth-child(2) .text .badge {
+            background: rgba(5, 150, 105, 0.12);
+            color: #059669;
+        }
+        .hero-slide:nth-child(3) .text .badge {
+            background: rgba(124, 58, 237, 0.12);
+            color: #7c3aed;
+        }
+        .hero-slide .text h2 {
+            font-size: clamp(1.8rem, 3.8vw, 2.9rem);
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+        .hero-slide .text h2 em {
+            font-style: normal;
+            color: var(--primary);
+        }
+        .hero-slide:nth-child(2) .text h2 em {
+            color: #059669;
+        }
+        .hero-slide:nth-child(3) .text h2 em {
+            color: #7c3aed;
+        }
+        .hero-slide .text p {
+            color: var(--text-mid);
+            margin: 0.5rem 0 1.2rem;
+            font-size: 1.05rem;
+            max-width: 90%;
+        }
+        .hero-slide .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.55rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.28);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+        .hero-slide .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+            transform: translateY(-2px);
+        }
+        .hero-slide:nth-child(2) .btn-primary {
+            background: #059669;
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.28);
+        }
+        .hero-slide:nth-child(2) .btn-primary:hover {
+            background: #047857;
+        }
+        .hero-slide:nth-child(3) .btn-primary {
+            background: #7c3aed;
+            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.28);
+        }
+        .hero-slide:nth-child(3) .btn-primary:hover {
+            background: #6d28d9;
+        }
+        .hero-slide .btn-outline {
+            background: transparent;
+            color: var(--text-dark);
+            padding: 0.55rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1.5px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-decoration: none;
+        }
+        .hero-slide .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.04);
+        }
+        .hero-slide .images {
+            display: flex;
+            gap: 1rem;
+            font-size: 3.8rem;
+            color: var(--primary);
+            opacity: 0.35;
+            user-select: none;
+        }
+        .hero-slide:nth-child(2) .images {
+            color: #059669;
+        }
+        .hero-slide:nth-child(3) .images {
+            color: #7c3aed;
+        }
+        .hero-slide .images i {
+            transition: var(--transition);
+        }
+        .hero-slide .images i:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .hero-dots {
+            position: absolute;
+            bottom: 1.2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.6rem;
+            z-index: 2;
+        }
+        .hero-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #94a3b8;
+            display: inline-block;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .hero-dots span.active {
+            background: var(--primary);
+            width: 28px;
+            border-radius: 12px;
+        }
+        .hero-dots span:hover {
+            background: var(--primary);
+            opacity: 0.7;
+        }
+
+        .hero-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: var(--text-dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        .hero-arrow:hover {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        }
+        .hero-arrow.prev {
+            left: 1.2rem;
+        }
+        .hero-arrow.next {
+            right: 1.2rem;
+        }
+
+        /* ===== 统计条 ===== */
+        .stats-strip {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            margin-bottom: 2.8rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .stat-item {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-right: 1px solid var(--border);
+        }
+        .stat-item:last-child {
+            border-right: none;
+        }
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-top: 0.1rem;
+        }
+
+        /* ===== 功能特性 ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.8rem;
+        }
+        .feature-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 1.3rem 0.8rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            cursor: default;
+        }
+        .feature-item:hover {
+            transform: translateY(-4px);
+            border-color: #bfdbfe;
+            box-shadow: var(--shadow-hover);
+        }
+        .feature-item i {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+        .feature-item h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+        .feature-item p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.1rem;
+        }
+
+        /* ===== 案例卡片 (带缩略图) ===== */
+        .case-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .case-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #bfdbfe;
+        }
+        .case-thumb {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: #fff;
+        }
+        .case-thumb.c1 {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        .case-thumb.c2 {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        .case-thumb.c3 {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        .case-thumb.c4 {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .case-thumb.c5 {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        .case-thumb.c6 {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+        }
+        .case-body {
+            padding: 1.2rem 1.3rem 1.4rem;
+        }
+        .case-body .case-tags {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .case-body .case-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 0.1rem 0.7rem;
+            border-radius: 30px;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .case-body .case-tag.green {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .case-body .case-tag.orange {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .case-body .case-tag.purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+        .case-body h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.3rem;
+        }
+        .case-body p {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+            margin-bottom: 0.6rem;
+        }
+        .case-body .case-meta {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* ===== 学习路径 ===== */
+        .path-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .path-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.6rem 1.4rem 1.8rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .path-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #bfdbfe;
+        }
+        .path-card .step-num {
+            position: absolute;
+            top: 0.6rem;
+            right: 1rem;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: rgba(37, 99, 235, 0.06);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .path-card .step-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .path-card h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+        .path-card p {
+            font-size: 0.82rem;
+            color: var(--text-mid);
+            line-height: 1.6;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            margin: 2.8rem 0 0.5rem;
+        }
+        .cta-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            border-radius: var(--radius);
+            padding: 3rem 2.8rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            top: -120px;
+            right: -60px;
+            pointer-events: none;
+        }
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            bottom: -80px;
+            left: -40px;
+            pointer-events: none;
+        }
+        .cta-box h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.6rem;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 1.6rem;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-btns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .btn-cta-primary {
+            background: #fff;
+            color: var(--primary);
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .btn-cta-outline {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+        .btn-cta-outline:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===== 底部 ===== */
+        .footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 0 1.5rem;
+            margin-top: 2.8rem;
+        }
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem 3rem;
+        }
+        .footer .col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--text-mid);
+            flex: 1 1 180px;
+        }
+        .footer .col strong {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .footer .col i {
+            margin-right: 0.4rem;
+            color: var(--primary);
+            width: 1.2rem;
+            text-align: center;
+        }
+        .footer .col a {
+            color: var(--text-mid);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .footer .col a:hover {
+            color: var(--primary);
+        }
+        .footer .bottom {
+            width: 100%;
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 1.2rem;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .navbar .container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .hero-slide {
+                padding: 0 2rem;
+            }
+            .hero-slide .text {
+                max-width: 100%;
+            }
+            .hero-slide .text p {
+                max-width: 100%;
+            }
+            .hero-slide .images {
+                display: none;
+            }
+            .stats-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stat-item:nth-child(2) {
+                border-right: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+            .nav-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+                gap: 1rem;
+            }
+            .card-grid-3 {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            .card-grid-4 {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            .feature-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                gap: 0.8rem;
+            }
+            .hero-carousel {
+                aspect-ratio: auto;
+                min-height: 200px;
+            }
+            .hero-slide .text h2 {
+                font-size: 1.6rem;
+            }
+            .hero-slide .text p {
+                font-size: 0.9rem;
+            }
+            .hero-dots {
+                bottom: 0.8rem;
+            }
+            .hero-arrow {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+            .hero-arrow.prev {
+                left: 0.6rem;
+            }
+            .hero-arrow.next {
+                right: 0.6rem;
+            }
+            .stats-strip {
+                grid-template-columns: 1fr 1fr;
+                border-radius: var(--radius-sm);
+            }
+            .stat-item {
+                padding: 1rem 0.5rem;
+            }
+            .stat-num {
+                font-size: 1.5rem;
+            }
+            .cta-box {
+                padding: 2rem 1.5rem;
+            }
+            .cta-box h2 {
+                font-size: 1.4rem;
+            }
+            .path-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 0.8rem;
+            }
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .card-grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .card-grid-4 {
+                grid-template-columns: 1fr 1fr;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .feature-item {
+                padding: 0.8rem 0.4rem;
+            }
+            .feature-item i {
+                font-size: 1.6rem;
+            }
+            .feature-item h4 {
+                font-size: 0.8rem;
+            }
+            .feature-item p {
+                font-size: 0.7rem;
+            }
+            .hero-carousel {
+                min-height: 160px;
+            }
+            .hero-slide {
+                padding: 1.2rem;
+            }
+            .hero-slide .text h2 {
+                font-size: 1.3rem;
+            }
+            .hero-slide .text p {
+                font-size: 0.8rem;
+                margin: 0.3rem 0 0.8rem;
+            }
+            .hero-slide .btn-primary,
+            .hero-slide .btn-outline {
+                font-size: 0.8rem;
+                padding: 0.4rem 1.2rem;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+            .identity-selector {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .user-info .name {
+                font-size: 0.8rem;
+            }
+            .avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 0.75rem;
+            }
+            .stats-strip {
+                grid-template-columns: 1fr 1fr;
+                gap: 0;
+            }
+            .stat-item {
+                padding: 0.8rem 0.3rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .stat-item:nth-child(3),
+            .stat-item:nth-child(4) {
+                border-bottom: none;
+            }
+            .stat-item:nth-child(even) {
+                border-left: 1px solid var(--border);
+            }
+            .path-grid {
+                grid-template-columns: 1fr;
+            }
+            .cta-btns {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .cta-btns .btn-cta-primary,
+            .cta-btns .btn-cta-outline {
+                justify-content: center;
+            }
+            .footer .container {
+                flex-direction: column;
+                gap: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-chalkboard-teacher"></i>
+                PBL HUB <span>· 项目式学习中心</span>
+            </a>
+            <div class="nav-links">
+                <a class="active" href="#">首页</a>
+                <a href="#">PBL案例库</a>
+                <a href="#">课程中心</a>
+                <a href="#">教师社区</a>
+                <a href="#">个人中心</a>
+                           </div>
+            <div class="nav-right">
+                <div class="identity-selector">
+                    <i class="fas fa-user-tag"></i> 教师
+                    <i class="fas fa-chevron-down"></i>
+                    <span class="badge">切换</span>
+                </div>
+                <div class="avatar">张</div>
+                <div class="user-info">
+                    <span class="name">张老师</span>
+                    <span class="role">高中信息科技</span>
+                </div>
+                <span class="logout"><i class="fas fa-sign-out-alt"></i> 退出</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== 主容器 ===== -->
+    <main class="container">
+
+        <!-- ============================================================ -->
+        <!-- ======================== 轮播图 ============================== -->
+        <!-- ============================================================ -->
+        <div class="hero-carousel" id="heroCarousel">
+            <div class="hero-slides" id="heroSlides">
+                <!-- Slide 1 -->
+                <div class="hero-slide">
+                   <div class="slide-bg" style="background: url('images/banner1.jpg') center center / cover no-repeat;"></div>
+                    <div class="slide-content">
+                        <div class="text">
+                            <div class="badge"><i class="fas fa-star" style="margin-right:0.3rem;"></i> 精选案例</div>
+                            <h2>用项目式学习<br /><em>点亮真实课堂</em></h2>
+                            <p>探索优秀PBL案例，获取教学设计灵感，与全国教师共同成长。</p>
+                            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+                                <a href="#" class="btn-primary"><i class="fas fa-rocket"></i> 浏览案例</a>
+                                <a href="#" class="btn-outline">了解 PBL</a>
+                            </div>
+                        </div>
+                        <div class="images">
+                            <i class="fas fa-image"></i>
+                            <i class="fas fa-project-diagram"></i>
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="hero-slide">
+                    <div class="slide-bg" style="background: url('images/banner2.jpg') center center / cover no-repeat;"></div>
+                    <div class="slide-content">
+                        <div class="text">
+                            <div class="badge"><i class="fas fa-seedling" style="margin-right:0.3rem;"></i> 真实落地</div>
+                            <h2>让每个项目<br /><em>真实落地</em></h2>
+                            <p>汇集全国优秀教师的PBL实践案例，涵盖信息科技、跨学科等多个领域。</p>
+                            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+                                <a href="#" class="btn-primary"><i class="fas fa-folder-open"></i> 案例库</a>
+                                <a href="#" class="btn-outline">教学资源</a>
+                            </div>
+                        </div>
+                        <div class="images">
+                            <i class="fas fa-flask"></i>
+                            <i class="fas fa-chart-bar"></i>
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="hero-slide">
+                    <div class="slide-bg" style="background: url('images/banner3.jpg') center center / cover no-repeat;"></div>
+                    <div class="slide-content">
+                        <div class="text">
+                            <div class="badge"><i class="fas fa-comments" style="margin-right:0.3rem;"></i> 教师社区</div>
+                            <h2>与同行交流<br /><em>共创未来</em></h2>
+                            <p>加入全国高中信息科技教师社区，分享经验、解决难题、共同推动PBL深度实践。</p>
+                            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+                                <a href="#" class="btn-primary"><i class="fas fa-users"></i> 加入社区</a>
+                                <a href="#" class="btn-outline">关于平台</a>
+                            </div>
+                        </div>
+                        <div class="images">
+                            <i class="fas fa-handshake"></i>
+                            <i class="fas fa-lightbulb"></i>
+                            <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="hero-arrow prev" id="heroPrev"><i class="fas fa-chevron-left"></i></button>
+            <button class="hero-arrow next" id="heroNext"><i class="fas fa-chevron-right"></i></button>
+
+            <div class="hero-dots" id="heroDots">
+                <span class="active" data-index="0"></span>
+                <span data-index="1"></span>
+                <span data-index="2"></span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ======================== 统计条 ============================== -->
+        <!-- ============================================================ -->
+        <div class="stats-strip">
+            <div class="stat-item">
+                <div class="stat-num">2,400+</div>
+                <div class="stat-label">注册教师</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">380+</div>
+                <div class="stat-label">精选项目案例</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">1,200+</div>
+                <div class="stat-label">教学资源文件</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">96%</div>
+                <div class="stat-label">教师满意度</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ======================== 核心功能 ============================ -->
+        <!-- ============================================================ -->
+        <div class="section-title">
+            <i class="fas fa-th-large"></i> 核心功能
+        </div>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="fas fa-robot"></i>
+                <h4>智能项目生成</h4>
+                <p>AI驱动设计</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-folder-open"></i>
+                <h4>案例库</h4>
+                <p>海量PBL项目</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-graduation-cap"></i>
+                <h4>学习中心</h4>
+                <p>系统化成长</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-comments"></i>
+                <h4>教师社区</h4>
+                <p>交流互助</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-chart-line"></i>
+                <h4>学习记录</h4>
+                <p>进度可视化</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-trophy"></i>
+                <h4>成果激励</h4>
+                <p>成长体系</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ======================== 精选案例 ============================ -->
+        <!-- ============================================================ -->
+        <div class="section-title">
+            <i class="fas fa-star" style="color:#f59e0b;"></i> 精选案例
+            <span class="more">查看更多 <i class="fas fa-chevron-right"></i></span>
+        </div>
+        <div class="card-grid card-grid-3" style="margin-bottom:2.8rem;">
+            <!-- 案例 1 -->
+            <div class="case-card">
+                <div class="case-thumb c1">🤖</div>
+                <div class="case-body">
+                    <div class="case-tags">
+                        <span class="case-tag">高一</span>
+                        <span class="case-tag green">信息科技</span>
+                        <span class="case-tag orange">4周</span>
+                    </div>
+                    <h4>校园垃圾分类 AI 识别系统</h4>
+                    <p>学生运用Python与机器学习技术，自主设计并训练垃圾分类模型。</p>
+                    <div class="case-meta">信息科技 · 精选案例</div>
+                </div>
+            </div>
+            <!-- 案例 2 -->
+            <div class="case-card">
+                <div class="case-thumb c2">📊</div>
+                <div class="case-body">
+                    <div class="case-tags">
+                        <span class="case-tag">高二</span>
+                        <span class="case-tag purple">跨学科</span>
+                        <span class="case-tag orange">3周</span>
+                    </div>
+                    <h4>班级学习数据可视化报告</h4>
+                    <p>以真实成绩数据为原料，完成数据采集、清洗、分析到可视化展示。</p>
+                    <div class="case-meta">信息科技+数学 · 精选案例</div>
+                </div>
+            </div>
+            <!-- 案例 3 -->
+            <div class="case-card">
+                <div class="case-thumb c3">🎮</div>
+                <div class="case-body">
+                    <div class="case-tags">
+                        <span class="case-tag">高一</span>
+                        <span class="case-tag green">信息科技</span>
+                        <span class="case-tag orange">5周</span>
+                    </div>
+                    <h4>传统文化主题互动游戏</h4>
+                    <p>以中华传统文化为主题，用Scratch完成角色设计、场景搭建与编程。</p>
+                    <div class="case-meta">信息科技+艺术 · 精选案例</div>
+                </div>
+            </div>
+            <!-- 案例 4 -->
+            <div class="case-card">
+                <div class="case-thumb c4">🌱</div>
+                <div class="case-body">
+                    <div class="case-tags">
+                        <span class="case-tag">高二</span>
+                        <span class="case-tag purple">跨学科</span>
+                        <span class="case-tag orange">6周</span>
+                    </div>
+                    <h4>智能温室环境监测系统</h4>
+                    <p>结合物理传感器与Arduino编程，设计温湿度自动监测与预警系统。</p>
+                    <div class="case-meta">信息科技+物理 · 精选案例</div>
+                </div>
+            </div>
+            <!-- 案例 5 -->
+            <div class="case-card">
+                <div class="case-thumb c5">📱</div>
+                <div class="case-body">
+                    <div class="case-tags">
+                        <span class="case-tag">高三</span>
+                        <span class="case-tag green">信息科技</span>
+                        <span class="case-tag orange">4周</span>
+                    </div>
+                    <h4>校园失物招领小程序</h4>
+                    <p>需求调研、原型设计与微信小程序开发，上线一周注册超200人。</p>
+                    <div class="case-meta">高中信息科技 · 精选案例</div>
+                </div>
+            </div>
+            <!-- 案例 6 -->
+            <div class="case-card">
+                <div class="case-thumb c6">🎵</div>
+                <div class="case-body">
+                    <div class="case-tags">
+                        <span class="case-tag">高一</span>
+                        <span class="case-tag purple">跨学科</span>
+                        <span class="case-tag orange">3周</span>
+                    </div>
+                    <h4>用数据讲述音乐流行趋势</h4>
+                    <p>爬取流媒体平台公开数据，分析流行音乐风格变迁，形成数据新闻。</p>
+                    <div class="case-meta">信息科技+艺术 · 精选案例</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ======================== 学习路径 ============================ -->
+        <!-- ============================================================ -->
+        <div class="section-title">
+            <i class="fas fa-road"></i> PBL 成长路线
+        </div>
+        <p class="section-sub">从零到精通，系统化学习框架，帮助每一位信息科技教师找到适合自己的PBL实践起点</p>
+
+        <div class="path-grid" style="margin-bottom:2.8rem;">
+            <div class="path-card">
+                <div class="step-num">01</div>
+                <span class="step-icon">📖</span>
+                <h4>PBL 基础理论</h4>
+                <p>以建构主义为核心，理解项目式学习的本质与高中信息科技课程的契合点</p>
+            </div>
+            <div class="path-card">
+                <div class="step-num">02</div>
+                <span class="step-icon">🎯</span>
+                <h4>项目设计方法</h4>
+                <p>掌握逆向设计法、驱动性问题构建、支架式任务分解等核心设计工具</p>
+            </div>
+            <div class="path-card">
+                <div class="step-num">03</div>
+                <span class="step-icon">🚀</span>
+                <h4>课堂实施策略</h4>
+                <p>小组合作管理、过程监控、教师引导技巧，让PBL在真实课堂顺利落地</p>
+            </div>
+            <div class="path-card">
+                <div class="step-num">04</div>
+                <span class="step-icon">📊</span>
+                <h4>多元评价体系</h4>
+                <p>设计过程性评价、同伴互评与成果展示评价量规，实现成长性教学评估</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ======================== CTA ================================ -->
+        <!-- ============================================================ -->
+        <div class="cta-section">
+            <div class="cta-box">
+                <h2>准备好开始你的第一个 PBL 项目了吗？</h2>
+                <p>加入 2,400+ 名教师，使用 PBL HUB 让项目式学习真正发生在你的课堂</p>
+                <div class="cta-btns">
+                    <a href="#" class="btn-cta-primary"><i class="fas fa-wand-magic-sparkles"></i> 立即生成项目方案</a>
+                    <a href="#" class="btn-cta-outline"><i class="fas fa-book-open"></i> 先从理论学起</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== 底部 ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="col">
+                <strong>PBL HUB</strong>
+                <span>项目式学习教师研修社区</span>
+                <span><i class="fas fa-map-marker-alt"></i> 兰州市 · 教育创新中心</span>
+            </div>
+            <div class="col">
+                <strong>平台功能</strong>
+                <a href="#"><i class="fas fa-robot"></i> 项目设计工具</a>
+                <a href="#"><i class="fas fa-folder-open"></i> 项目案例库</a>
+                <a href="#"><i class="fas fa-graduation-cap"></i> PBL学习中心</a>
+                <a href="#"><i class="fas fa-comments"></i> 社区讨论</a>
+            </div>
+            <div class="col">
+                <strong>资源分类</strong>
+                <a href="#"><i class="fas fa-file-alt"></i> 教学设计模板</a>
+                <a href="#"><i class="fas fa-clipboard-list"></i> 评价量规库</a>
+                <a href="#"><i class="fas fa-tools"></i> 技术工具指南</a>
+                <a href="#"><i class="fas fa-star"></i> 学生作品范例</a>
+            </div>
+            <div class="col">
+                <strong>联系我们</strong>
+                <span><i class="fas fa-envelope"></i> contact@pblhub.edu</span>
+                <span><i class="fas fa-phone"></i> 133-2831-7513</span>
+                <span><i class="fas fa-university"></i> 西北师范大学教育技术学院</span>
+            </div>
+        </div>
+        <div class="bottom">
+            © 2026 PBL HUB · 项目式学习中心 · 高中信息科技教师专业发展社区
+        </div>
+    </footer>
+
+    <!-- ===== JavaScript 轮播 ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.getElementById('heroSlides');
+            const dots = document.querySelectorAll('#heroDots span');
+            const prevBtn = document.getElementById('heroPrev');
+            const nextBtn = document.getElementById('heroNext');
+            const total = 3;
+            let current = 0;
+            let timer = null;
+
+            function goTo(index) {
+                current = (index + total) % total;
+                slides.style.transform = 'translateX(-' + (current * 100) + '%)';
+                dots.forEach((d, i) => {
+                    d.classList.toggle('active', i === current);
+                });
+            }
+
+            function next() {
+                goTo(current + 1);
+            }
+
+            function prev() {
+                goTo(current - 1);
+            }
+
+            function resetTimer() {
+                if (timer) clearInterval(timer);
+                timer = setInterval(next, 5000);
+            }
+
+            // 事件绑定
+            prevBtn.addEventListener('click', function() {
+                prev();
+                resetTimer();
+            });
+            nextBtn.addEventListener('click', function() {
+                next();
+                resetTimer();
+            });
+            dots.forEach((dot, i) => {
+                dot.addEventListener('click', function() {
+                    goTo(i);
+                    resetTimer();
+                });
+            });
+
+            // 鼠标悬停暂停
+            const carousel = document.getElementById('heroCarousel');
+            carousel.addEventListener('mouseenter', function() {
+                if (timer) clearInterval(timer);
+            });
+            carousel.addEventListener('mouseleave', function() {
+                resetTimer();
+            });
+
+            // 初始化
+            goTo(0);
+            resetTimer();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBL HUB · 课程中心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== 全局重置 & 变量 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #dbeafe;
+            --primary-bg: #f0f7ff;
+            --bg: #f6f9fc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-mid: #475569;
+            --text-light: #94a3b8;
+            --border: #e9edf4;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.08);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.25s ease;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 1.8rem;
+        }
+
+        /* ===== 导航栏 ===== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04);
+            padding: 0.6rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo i {
+            font-size: 2rem;
+        }
+        .logo span {
+            font-weight: 300;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-left: 0.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-mid);
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.3rem 0;
+            border-bottom: 2.5px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links a.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .identity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f1f5f9;
+            padding: 0.25rem 0.9rem 0.25rem 1.1rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            cursor: default;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+        .identity-selector:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+        .identity-selector i.fa-chevron-down {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            margin-left: 0.1rem;
+        }
+        .identity-selector .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.6rem;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-left: 0.2rem;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: default;
+            flex-shrink: 0;
+        }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .user-info .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        .user-info .role {
+            font-size: 0.65rem;
+            color: var(--text-light);
+        }
+        .logout {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            cursor: default;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .logout:hover {
+            color: #ef4444;
+        }
+
+        /* ===== 页面板块容器 ===== */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.35s ease;
+            padding: 1.5rem 0 2.5rem;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== 课程中心专属 ===== */
+
+        /* ---- 页面标题 ---- */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .page-header h1 i {
+            color: var(--primary);
+        }
+        .page-header .stats {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            background: var(--card-bg);
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+        }
+        .page-header .stats .my-progress {
+            margin-left: 0.8rem;
+            padding-left: 0.8rem;
+            border-left: 1px solid var(--border);
+            color: var(--text-mid);
+        }
+        .page-header .stats .my-progress strong {
+            color: var(--primary);
+        }
+
+        /* ---- 课程分类标签 ---- */
+        .category-tabs {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            background: var(--card-bg);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .category-tabs span {
+            padding: 0.4rem 1.4rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-mid);
+            cursor: default;
+            transition: var(--transition);
+            background: transparent;
+        }
+        .category-tabs span:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .category-tabs span.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .category-tabs span .count {
+            font-weight: 400;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-left: 0.2rem;
+        }
+        .category-tabs .search-wrapper {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border-radius: 30px;
+            padding: 0.2rem 1rem 0.2rem 1.2rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            min-width: 180px;
+        }
+        .category-tabs .search-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+            background: var(--card-bg);
+        }
+        .category-tabs .search-wrapper input {
+            border: none;
+            background: transparent;
+            padding: 0.3rem 0.5rem;
+            width: 100%;
+            font-size: 0.85rem;
+            outline: none;
+            color: var(--text-dark);
+        }
+        .category-tabs .search-wrapper input::placeholder {
+            color: var(--text-light);
+        }
+        .category-tabs .search-wrapper i {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* ---- 课程卡片网格 ---- */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #bfdbfe;
+        }
+
+        /* 课程封面 */
+        .course-card .cover {
+            height: 130px;
+            background: linear-gradient(135deg, var(--primary-light), #bfdbfe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            position: relative;
+            flex-shrink: 0;
+        }
+        .course-card .cover .cover-tag {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+        }
+        .course-card .cover .cover-tag.ongoing {
+            background: #22c55e;
+        }
+        .course-card .cover .cover-tag.upcoming {
+            background: #f59e0b;
+        }
+        .course-card .cover .cover-tag.finished {
+            background: #94a3b8;
+        }
+
+        /* 课程内容 */
+        .course-card .body {
+            padding: 1.2rem 1.3rem 1.3rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .course-card .body .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.2rem;
+        }
+        .course-card .body .top-row h4 {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+        .course-card .body .top-row .fav-btn {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            cursor: default;
+            transition: var(--transition);
+            padding: 0.2rem 0.3rem;
+            border-radius: 6px;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+        .course-card .body .top-row .fav-btn:hover {
+            color: #f59e0b;
+            background: #fef3c7;
+        }
+        .course-card .body .top-row .fav-btn.active {
+            color: #f59e0b;
+        }
+
+        .course-card .body .instructor {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            margin-bottom: 0.3rem;
+        }
+        .course-card .body .instructor i {
+            color: var(--primary);
+            margin-right: 0.2rem;
+        }
+
+        .course-card .body .meta-row {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.78rem;
+            color: var(--text-light);
+            margin-bottom: 0.6rem;
+        }
+        .course-card .body .meta-row span i {
+            margin-right: 0.2rem;
+        }
+
+        /* 进度条 */
+        .course-card .body .progress-area {
+            margin-top: auto;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--border);
+        }
+        .course-card .body .progress-area .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+        }
+        .course-card .body .progress-area .progress-header .pct {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .course-card .body .progress-area .track {
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .course-card .body .progress-area .track .fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
+        .course-card .body .action-row {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 0.6rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .course-card .body .action-row span {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            cursor: default;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .course-card .body .action-row span:hover {
+            color: var(--primary);
+        }
+        .course-card .body .action-row span i {
+            font-size: 0.8rem;
+        }
+
+        /* ---- 分页 ---- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 1.5rem;
+        }
+        .pagination span {
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-mid);
+            font-size: 0.9rem;
+            cursor: default;
+            transition: var(--transition);
+        }
+        .pagination span.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .pagination span:hover:not(.active) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== 底部 ===== */
+        .footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .footer .col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--text-mid);
+        }
+        .footer .col strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        .footer .col i {
+            margin-right: 0.4rem;
+            color: var(--primary);
+            width: 1.2rem;
+            text-align: center;
+        }
+        .footer .col a {
+            color: var(--text-mid);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .footer .col a:hover {
+            color: var(--primary);
+        }
+        .footer .bottom {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .navbar .container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .category-tabs .search-wrapper {
+                min-width: 140px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+            .nav-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .page-header h1 {
+                font-size: 1.4rem;
+            }
+            .page-header .stats {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .page-header .stats .my-progress {
+                margin-left: 0.4rem;
+                padding-left: 0.4rem;
+            }
+            .category-tabs {
+                flex-wrap: wrap;
+                padding: 0.5rem 0.8rem;
+                gap: 0.4rem;
+            }
+            .category-tabs span {
+                font-size: 0.78rem;
+                padding: 0.3rem 0.9rem;
+            }
+            .category-tabs .search-wrapper {
+                min-width: auto;
+                width: 100%;
+                margin-left: 0;
+                margin-top: 0.3rem;
+            }
+            .course-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            .course-card .cover {
+                height: 100px;
+                font-size: 2.2rem;
+            }
+            .course-card .body {
+                padding: 0.8rem 1rem 1rem;
+            }
+            .course-card .body .top-row h4 {
+                font-size: 0.95rem;
+            }
+            .course-card .body .meta-row {
+                font-size: 0.7rem;
+                gap: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+            .course-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .course-card .cover {
+                height: 80px;
+                font-size: 1.8rem;
+            }
+            .course-card .cover .cover-tag {
+                font-size: 0.5rem;
+                padding: 0.1rem 0.5rem;
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+            .course-card .body {
+                padding: 0.6rem 0.7rem 0.8rem;
+            }
+            .course-card .body .top-row h4 {
+                font-size: 0.8rem;
+            }
+            .course-card .body .instructor {
+                font-size: 0.7rem;
+            }
+            .course-card .body .meta-row {
+                font-size: 0.65rem;
+                flex-wrap: wrap;
+                gap: 0.3rem 0.6rem;
+            }
+            .course-card .body .progress-area .progress-header {
+                font-size: 0.65rem;
+            }
+            .course-card .body .action-row span {
+                font-size: 0.65rem;
+            }
+            .identity-selector {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+            }
+            .avatar {
+                width: 30px;
+                height: 30px;
+                font-size: 0.75rem;
+            }
+            .user-info .name {
+                font-size: 0.8rem;
+            }
+            .user-info .role {
+                font-size: 0.55rem;
+            }
+            .logout {
+                font-size: 0.7rem;
+            }
+            .category-tabs span {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.7rem;
+            }
+            .pagination span {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            .page-header h1 {
+                font-size: 1.1rem;
+            }
+            .page-header .stats {
+                font-size: 0.65rem;
+                padding: 0.15rem 0.6rem;
+            }
+            .page-header .stats .my-progress {
+                display: block;
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+                margin-top: 0.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-chalkboard-teacher"></i>
+                PBL HUB <span>· 项目式学习中心</span>
+            </a>
+            <div class="nav-links">
+                <a href="#" data-target="home">首页</a>
+                <a href="#" data-target="resources">PBL资源库</a>
+                <a href="#" class="active" data-target="courses">课程中心</a>
+                <a href="#" data-target="community">教师社区</a>
+                <a href="#" data-target="profile">个人中心</a>
+            </div>
+            <div class="nav-right">
+                <div class="identity-selector">
+                    <i class="fas fa-user-tag"></i> 教师
+                    <i class="fas fa-chevron-down"></i>
+                    <span class="badge">切换</span>
+                </div>
+                <div class="avatar">张</div>
+                <div class="user-info">
+                    <span class="name">张老师</span>
+                    <span class="role">初中信息科技</span>
+                </div>
+                <span class="logout"><i class="fas fa-sign-out-alt"></i> 退出</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== 主容器 ===== -->
+    <main class="container">
+
+        <!-- ============================================================ -->
+        <!-- ======================== 课程中心 =========================== -->
+        <!-- ============================================================ -->
+        <section id="page-courses" class="page-section active">
+
+            <!-- ---- 页面标题 ---- -->
+            <div class="page-header">
+                <h1><i class="fas fa-graduation-cap"></i> 课程中心</h1>
+                <div class="stats">
+                    <i class="far fa-file-alt"></i> 共 24 门课程
+                    <span class="my-progress"><i class="fas fa-chart-simple"></i> 学习进度 <strong>42%</strong></span>
+                </div>
+            </div>
+
+            <!-- ---- 分类标签 + 搜索 ---- -->
+            <div class="category-tabs">
+                <span class="active">全部 <span class="count">(24)</span></span>
+                <span>进行中 <span class="count">(4)</span></span>
+                <span>未开始 <span class="count">(12)</span></span>
+                <span>已完结 <span class="count">(8)</span></span>
+                <span>我收藏的 <span class="count">(6)</span></span>
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索课程名称...">
+                </div>
+            </div>
+
+            <!-- ---- 课程卡片网格 ---- -->
+            <div class="course-grid">
+
+                <!-- 课程 1 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #dbeafe, #93c5fd);">
+                        <i class="fas fa-lightbulb"></i>
+                        <span class="cover-tag ongoing">进行中</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>PBL 设计入门</h4>
+                            <span class="fav-btn active" title="已收藏"><i class="fas fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 张老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 6 课时</span>
+                            <span><i class="far fa-user"></i> 234 人学习</span>
+                            <span><i class="far fa-star"></i> 4.8</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">60%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:60%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-play-circle"></i> 继续学习</span>
+                            <span><i class="far fa-bookmark"></i> 收藏</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 2 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #fef3c7, #fcd34d);">
+                        <i class="fas fa-chart-line"></i>
+                        <span class="cover-tag ongoing">进行中</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>评价量表设计</h4>
+                            <span class="fav-btn" title="收藏"><i class="far fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 李老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 4 课时</span>
+                            <span><i class="far fa-user"></i> 187 人学习</span>
+                            <span><i class="far fa-star"></i> 4.6</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">25%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:25%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-play-circle"></i> 继续学习</span>
+                            <span><i class="far fa-bookmark"></i> 收藏</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 3 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #d1fae5, #6ee7b7);">
+                        <i class="fas fa-users-cog"></i>
+                        <span class="cover-tag ongoing">进行中</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>跨学科项目策划</h4>
+                            <span class="fav-btn active" title="已收藏"><i class="fas fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 王老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 8 课时</span>
+                            <span><i class="far fa-user"></i> 156 人学习</span>
+                            <span><i class="far fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">30%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:30%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-play-circle"></i> 继续学习</span>
+                            <span><i class="far fa-bookmark"></i> 收藏</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 4 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #e0e7ff, #a5b4fc);">
+                        <i class="fas fa-question-circle"></i>
+                        <span class="cover-tag upcoming">未开始</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>驱动性问题设计</h4>
+                            <span class="fav-btn" title="收藏"><i class="far fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 赵老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 5 课时</span>
+                            <span><i class="far fa-user"></i> 98 人学习</span>
+                            <span><i class="far fa-star"></i> 4.7</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">0%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:0%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-play-circle"></i> 开始学习</span>
+                            <span><i class="far fa-bookmark"></i> 收藏</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 5 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #fce7f3, #f9a8d4);">
+                        <i class="fas fa-tasks"></i>
+                        <span class="cover-tag upcoming">未开始</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>项目式学习评价</h4>
+                            <span class="fav-btn" title="收藏"><i class="far fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 孙老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 6 课时</span>
+                            <span><i class="far fa-user"></i> 132 人学习</span>
+                            <span><i class="far fa-star"></i> 4.5</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">0%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:0%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-play-circle"></i> 开始学习</span>
+                            <span><i class="far fa-bookmark"></i> 收藏</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 6 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #dbeafe, #60a5fa);">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <span class="cover-tag ongoing">进行中</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>教师引导技巧</h4>
+                            <span class="fav-btn" title="收藏"><i class="far fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 刘老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 4 课时</span>
+                            <span><i class="far fa-user"></i> 210 人学习</span>
+                            <span><i class="far fa-star"></i> 4.8</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">80%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:80%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-play-circle"></i> 继续学习</span>
+                            <span><i class="far fa-bookmark"></i> 收藏</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 7 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #e0e7ff, #818cf8);">
+                        <i class="fas fa-puzzle-piece"></i>
+                        <span class="cover-tag finished">已完结</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>项目式学习基础</h4>
+                            <span class="fav-btn active" title="已收藏"><i class="fas fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 陈老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 10 课时</span>
+                            <span><i class="far fa-user"></i> 456 人学习</span>
+                            <span><i class="far fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">100%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:100%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-redo"></i> 复习</span>
+                            <span><i class="fas fa-certificate"></i> 已结业</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程 8 -->
+                <div class="course-card">
+                    <div class="cover" style="background: linear-gradient(135deg, #fef3c7, #fbbf24);">
+                        <i class="fas fa-users"></i>
+                        <span class="cover-tag finished">已完结</span>
+                    </div>
+                    <div class="body">
+                        <div class="top-row">
+                            <h4>小组合作与分工</h4>
+                            <span class="fav-btn" title="收藏"><i class="far fa-star"></i></span>
+                        </div>
+                        <div class="instructor"><i class="fas fa-user"></i> 吴老师 · 教研组</div>
+                        <div class="meta-row">
+                            <span><i class="far fa-clock"></i> 3 课时</span>
+                            <span><i class="far fa-user"></i> 178 人学习</span>
+                            <span><i class="far fa-star"></i> 4.4</span>
+                        </div>
+                        <div class="progress-area">
+                            <div class="progress-header">
+                                <span>学习进度</span>
+                                <span class="pct">100%</span>
+                            </div>
+                            <div class="track"><div class="fill" style="width:100%;"></div></div>
+                        </div>
+                        <div class="action-row">
+                            <span><i class="fas fa-redo"></i> 复习</span>
+                            <span><i class="fas fa-certificate"></i> 已结业</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ---- 分页 ---- -->
+            <div class="pagination">
+                <span><i class="fas fa-chevron-left"></i></span>
+                <span class="active">1</span>
+                <span>2</span>
+                <span>3</span>
+                <span><i class="fas fa-chevron-right"></i></span>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===== 底部 ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="col">
+                <strong>PBL HUB</strong>
+                <span>项目式学习教师研修社区</span>
+                <span><i class="fas fa-map-marker-alt"></i> 兰州市 · 教育创新中心</span>
+            </div>
+            <div class="col">
+                <strong>关于我们</strong>
+                <span><i class="fas fa-envelope"></i> contact@pblhub.edu</span>
+                <span><i class="fas fa-users"></i> 成员：张老师、李老师、王老师</span>
+                <span><i class="fas fa-info-circle"></i> 赋能教师PBL设计</span>
+            </div>
+            <div class="col">
+                <strong>快速链接</strong>
+                <a href="#"><i class="fas fa-home"></i> 首页</a>
+                <a href="#"><i class="fas fa-user"></i> 个人中心</a>
+                <a href="#"><i class="fas fa-info-circle"></i> 关于我们</a>
+            </div>
+        </div>
+        <div class="bottom">
+            © 2026 PBL HUB · 项目式学习中心
+        </div>
+    </footer>
+
+    <!-- ===== JavaScript ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ---- 导航切换（占位） ----
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.dataset.target;
+                    if (!target) return;
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    if (target !== 'courses') {
+                        alert('「' + this.textContent.trim() + '」页面即将上线，敬请期待！');
+                    }
+                });
+            });
+
+            // ---- 分类标签切换 ----
+            const tabs = document.querySelectorAll('.category-tabs span:not(.search-wrapper)');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // 模拟筛选效果
+                    const label = this.textContent.trim().replace(/\s*\(.*\)/, '');
+                    console.log('筛选:', label);
+                });
+            });
+
+            // ---- 搜索框 ----
+            const searchInput = document.querySelector('.search-wrapper input');
+            if (searchInput) {
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        alert('搜索课程：' + this.value);
+                    }
+                });
+            }
+
+            // ---- 收藏按钮切换 ----
+            const favBtns = document.querySelectorAll('.fav-btn');
+            favBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isActive = this.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (isActive) {
+                        icon.className = 'fas fa-star';
+                        this.title = '已收藏';
+                    } else {
+                        icon.className = 'far fa-star';
+                        this.title = '收藏';
+                    }
+                });
+            });
+
+            // ---- 课程操作按钮（继续学习/开始学习/复习） ----
+            const actionSpans = document.querySelectorAll('.action-row span');
+            actionSpans.forEach(span => {
+                span.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const text = this.textContent.trim();
+                    const courseTitle = this.closest('.body').querySelector('h4').textContent;
+                    if (text.includes('继续学习') || text.includes('开始学习')) {
+                        alert('▶ 进入课程：' + courseTitle);
+                    } else if (text.includes('复习')) {
+                        alert('🔄 复习课程：' + courseTitle);
+                    } else if (text.includes('收藏')) {
+                        // 由上面的收藏按钮处理
+                    } else if (text.includes('已结业')) {
+                        alert('🎓 查看结业证书：' + courseTitle);
+                    }
+                });
+            });
+
+            // ---- 分页 ----
+            const pageSpans = document.querySelectorAll('.pagination span');
+            pageSpans.forEach(span => {
+                span.addEventListener('click', function() {
+                    if (this.textContent.includes('chevron')) return;
+                    pageSpans.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
